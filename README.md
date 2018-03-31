@@ -46,3 +46,5 @@ callBack(responseText) // 若成功，通过回掉函数接收 ajax 返回的数
 
 4. 向服务器发送数据
 xhr.send()
+
+![](preview.png)
