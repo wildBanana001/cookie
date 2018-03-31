@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<style type="text/css">
+		* {
+			margin: 0;
+			padding: 0;
+		}
+		div {
+			position: absolute;
+			width: 100px;
+			height: 100px;
+			background-color: yellowgreen;
+			border-radius: 50%;
+		}
+	</style>
+	<div></div>
+
+	<script src="./Cookie.js"></script>
+	<script type="text/javascript">
+		var drag = {
+			init : function(dom) {
+				this.dom = dom;
+				manageCookie.getCookie('position',function(data) {
+					if(data !== undefined) {
+						var item = data.split('&');
+						dom.style.left = item[0] + 'px';
+						dom.style.top = item[1] + 'px';
+					}
+				})
+				this.bindEvent();
+				console.log(dom);
+			},
+			bindEvent : function() {
+				this.dom.onmousedown = this.downFun.bind(this);
+			},
+			downFun : function(event) {
+				this.disX = event.clientX - this.dom.offsetLeft;
+				this.disY = event.clientY - this.dom.offsetTop;
+				document.onmousemove = this.moveFun.bind(this);
+				document.onmouseup = this.upFun.bind(this);
+			},
+			moveFun : function(event) {
+				this.newLeft = event.clientX - this.disX;
+				this.newTop = event.clientY - this.disY;
+
+				this.dom.style.left = this.newLeft + 'px';
+				this.dom.style.top = this.newTop + 'px';
+			},
+			upFun : function(event) {
+				document.onmousemove = null;
+				document.onmouseup = null;
+
+				manageCookie.setCookie('position', this.newLeft + '&' + this.newTop, 1);
+			}
+		}
+
+		var oDiv = document.getElementsByTagName('div')[0];
+		drag.init(oDiv);
+	</script>
+</body>
+</html>
